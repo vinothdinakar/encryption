@@ -4,7 +4,6 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var encryption = require('./libs/encryption.js');
-var getUserInput = require('readline-sync');
 
 
 console.debug(encryption);
