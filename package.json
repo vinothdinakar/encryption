@@ -1,0 +1,19 @@
+{
+  "name": "encryption",
+  "version": "1.0.0",
+  "description": "sample encryption app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "vinoth.dinakar@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "express": "^4.16.3",
+    "http": "0.0.0",
+    "readline-sync": "^1.4.9",
+    "socket.io": "^2.1.0",
+    "socket.io-client": "^2.1.0"
+  }
+}
