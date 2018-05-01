@@ -2,6 +2,7 @@
 
 var chalk = require('chalk');
 var encryption = require('./libs/encryption.js');
+var getUserInput = require('readline-sync');
 
 
 var thisClient = this;
@@ -25,15 +26,36 @@ var connectToServer = function (thisClient) {
     thisClient.clientSocket.on('init', function (msg, clientId) {
         console.log(msg);
         thisClient.clientId = clientId;
+
+        var validInput = false;
+        while (validInput === false) {
+            console.log(chalk.blue('Type 1- Symmetric Key Encryption, 2-Asymmetric Key Encription:'));
+            var userInput = getUserInput.question('>');
+            //console.log('userInput '+userInput);
+
+            if (userInput == 1 || userInput == 2) {
+                validInput = true;
+            }
+            else {
+                console.log(chalk.blue('Invalid input. (Type 1 or 2)...'));
+            }
+        }
         //console.log('Your clientId is '+ thisClient.clientId);
+        thisClient.clientSocket.emit('encType', thisClient.clientId, userInput);
     }.bind(thisClient));
 
 
-    thisClient.clientSocket.on('encMess', function (message, clientId) {
-        console.log('Message received from server - ' + message);
+    thisClient.clientSocket.on('clientData', function (message, clientId) {
+        console.log('Received Encrypted data from server - ' + message.encryptedResult);
 
-        var decryptedText = encryption.decrypt(message, key);
-        console.log('Decrypted text result: ' + decryptedText);
+        if (message.encType === 1) {
+            console.log('Trying to decrypt the data using Symmetric key encryption');
+            var decryptedText = encryption.decrypt(message.encryptedResult, key);
+            console.log('Decrypted text result: ' + decryptedText);
+
+
+        }
+
 
     });
 };
