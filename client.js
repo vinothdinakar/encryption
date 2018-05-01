@@ -17,7 +17,8 @@ this.clientId = null;
 var connectToServer = function (thisClient) {
 
     var key = 'a23s23da5sd67c8f9kjk0jh3rt5ntbm7ghqgwe23qwb4en5nqmhw643gjb3me23nn4kj5w6eh7r78g3we';
-    var keyPair = asymmetric_crypto.keyPair();
+    var clientPassword = 'thisisabiglongpasswordwithonlyaphabetsandnonumbers';
+    var keyPair = asymmetric_crypto.keyPair(clientPassword);
 
     thisClient.clientSocket = require('socket.io-client')(thisClient.ipUrl);
 
