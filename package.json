@@ -9,6 +9,7 @@
   "author": "vinoth.dinakar@gmail.com",
   "license": "MIT",
   "dependencies": {
+    "asymmetric-crypto": "^1.0.1",
     "chalk": "^2.4.1",
     "express": "^4.16.3",
     "http": "0.0.0",

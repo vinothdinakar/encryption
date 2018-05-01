@@ -4,6 +4,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var encryption = require('./libs/encryption.js');
+var asymmetric_crypto = require('asymmetric-crypto');
 
 
 console.debug(encryption);
@@ -29,8 +30,9 @@ io.on('connection', function(socket){
         console.log('Client disconnected')
     });
 
-    socket.on('encType', function (clientId, encType) {
+    socket.on('encType', function (message) {
         console.log('in encType');
+        var encType = message.encType;
         console.log(encType);
 
         if (encType == 1) {
@@ -48,7 +50,20 @@ io.on('connection', function(socket){
             thisServer.communicate(newClientId, 'clientData', clientData);
             console.log('Passed encrypted data to client');
         }
-        else if (encType === 2) {
+        else if (encType == 2) {
+            console.log('Running Asymmetric Key Encryption');
+            var keyPair = asymmetric_crypto.keyPair();
+            console.log(keyPair);
+            var data = 'This is a test data for Asymmetric key encryption';
+            console.log(message.publicKey);
+            var encrypted = asymmetric_crypto.encrypt(data, message.publicKey, keyPair.secretKey);
+            console.log(encrypted);
+            var message = {
+                serverPublicKey: keyPair.publicKey,
+                encryptedData: encrypted,
+                encType: 2
+            };
+            thisServer.communicate(newClientId, 'clientData', message);
 
         }
     });
