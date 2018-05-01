@@ -69,9 +69,13 @@ var connectToServer = function (thisClient) {
         else if (message.encType === 2) {
             console.log('Received Encrypted data from server - ' + message.encryptedData.data);
             console.log('Trying to decrypt the data using Asymmetric key encryption');
+            // Decrypting the message
             var decryptedText = asymmetric_crypto.decrypt(message.encryptedData.data, message.encryptedData.nonce,
                 message.serverPublicKey, keyPair.secretKey);
+            // verifying the signature
+            var isSignatureValid = asymmetric_crypto.verify(decryptedText, message.signature, message.serverPublicKey);
             console.log('Decrypted text result: ' + decryptedText);
+            console.log('Signature Valid: ' + isSignatureValid);
         }
     });
 };

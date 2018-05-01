@@ -53,16 +53,20 @@ io.on('connection', function(socket){
         else if (encType == 2) {
             console.log('Running Asymmetric Key Encryption');
             var keyPair = asymmetric_crypto.keyPair();
-            console.log(keyPair);
             var data = 'This is a test data for Asymmetric key encryption';
-            console.log(message.publicKey);
+
+            // Encrypting the message
             var encrypted = asymmetric_crypto.encrypt(data, message.publicKey, keyPair.secretKey);
-            console.log(encrypted);
+            // Signing the message
+            var signature = asymmetric_crypto.sign(data, keyPair.secretKey);
+
             var message = {
                 serverPublicKey: keyPair.publicKey,
                 encryptedData: encrypted,
+                signature: signature,
                 encType: 2
             };
+
             thisServer.communicate(newClientId, 'clientData', message);
 
         }
