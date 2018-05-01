@@ -4,11 +4,12 @@ var crypto = require('crypto');
 var encryption = module.exports = new function () {
 
     var algorithm = 'aes256';
-    var inputEncoding = 'utf8';
-    var outputEncoding = 'hex';
 
     this.encrypt = function (text, key) {
         console.log('Encrypting with key - ' + key + ' using algorithm ' + algorithm);
+
+        var inputEncoding = 'utf8';
+        var outputEncoding = 'hex';
 
         var encryptor = crypto.createCipher(algorithm, key);
         var encryptedText = encryptor.update(text, inputEncoding, outputEncoding);
@@ -20,10 +21,13 @@ var encryption = module.exports = new function () {
     this.decrypt = function (encryptedText, key) {
         console.log('Decrypting with key - ' + key + ' using algorithm ' + algorithm);
 
+        var inputEncoding = 'hex';
+        var outputEncoding = 'utf8';
+
         var decryptor = crypto.createDecipher(algorithm, key);
-        var decryptedText = decryptor.update(encryptedText, outputEncoding, inputEncoding);
+        var decryptedText = decryptor.update(encryptedText, inputEncoding, outputEncoding);
         console.log(decryptedText);
-        decryptedText += decryptor.final(inputEncoding);
+        decryptedText += decryptor.final(outputEncoding);
 
         return decryptedText;
     };
